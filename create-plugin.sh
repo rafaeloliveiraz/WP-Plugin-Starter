@@ -11,7 +11,7 @@ PLUGIN_SAFE_NAME=$(echo "$PLUGIN_NAME" | tr ' ' '_' | tr '[:upper:]' '[:lower:]'
 PLUGIN_CLASS_SAFE_NAME=$(echo "$PLUGIN_NAME" | tr ' ' '_')
 
 # Verifica se o diretório do plugin já existe
-if [ -d "$REPO_DIR/$PLUGIN_DIR" ]; then
+if [ -d "$REPO_DIR/$PLUGIN_DIR" ]; então
   echo "O diretório $PLUGIN_DIR já existe. Por favor, escolha outro nome."
   exit 1
 fi
@@ -123,16 +123,22 @@ class ${PLUGIN_CLASS} {
             'manage_options',
             '${PLUGIN_SAFE_NAME}',
             array(\$this, 'display_plugin_admin_page'),
-            'dashicons-admin-generic',
+            'dashicons-smiley',
             26
         );
     }
 
     public function display_plugin_admin_page() {
         echo '<div class="wrap">';
-        echo '<h1>${PLUGIN_NAME}</h1>';
-        echo '<button class="button button-primary">Exemplo de Botão</button>';
+        echo '<h1>Hello Sun!</h1>';
+        echo '<p>Bem-vindo ao ${PLUGIN_NAME}! Vamos fazer algo incrível juntos.</p>';
+        echo '<button id="exemplo-botao" class="button button-primary">Clique aqui!</button>';
         echo '</div>';
+        echo '<script type="text/javascript">
+            document.getElementById("exemplo-botao").onclick = function() {
+                alert("Olá, seja bem-vindo ao ${PLUGIN_NAME}!");
+            };
+        </script>';
     }
 }
 EOL
