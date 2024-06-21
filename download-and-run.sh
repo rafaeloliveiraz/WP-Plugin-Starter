@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Defina a URL do script principal
+# Define a URL do script principal
 SCRIPT_URL="https://raw.githubusercontent.com/rafaeloliveiraz/WP-Plugin-Starter/main/create-plugin.sh"
 
-# Defina o diretório onde o script será baixado e executado
+# Define o diretório onde o script será baixado e executado
 REPO_DIR="wp-plugin-starter"
 SCRIPT_PATH="$REPO_DIR/create-plugin.sh"
 
@@ -11,19 +11,13 @@ SCRIPT_PATH="$REPO_DIR/create-plugin.sh"
 mkdir -p $REPO_DIR
 
 # Baixe o script principal para o diretório do repositório
-curl -s $SCRIPT_URL -o $SCRIPT_PATH
+curl -s -o $SCRIPT_PATH $SCRIPT_URL
 
 # Dê permissão de execução ao script baixado
 chmod +x $SCRIPT_PATH
 
-# Navegue até o diretório do repositório
-cd $REPO_DIR
-
 # Execute o script principal
-$SCRIPT_PATH
+./$SCRIPT_PATH
 
-# Remova o script após a execução
-rm -f $SCRIPT_PATH
-
-# Navegue de volta ao diretório original
-cd ..
+# Remova o script após a execução (opcional)
+# rm -f $SCRIPT_PATH
