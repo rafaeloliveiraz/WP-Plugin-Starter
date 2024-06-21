@@ -4,7 +4,7 @@
 REPO_DIR="$(pwd)"
 
 # Solicita o nome do plugin ao usuário
-read -p "Digite o nome do plugin (Primeira letra maiúscula): " PLUGIN_NAME
+read -p "Digite o nome do plugin (Ex: Meu Plugin): " PLUGIN_NAME
 PLUGIN_DIR="${PLUGIN_NAME// /-}"
 PLUGIN_DIR=$(echo "$PLUGIN_DIR" | tr '[:upper:]' '[:lower:]')
 PLUGIN_SAFE_NAME=$(echo "$PLUGIN_NAME" | tr ' ' '_' | tr '[:upper:]' '[:lower:]')
@@ -29,10 +29,9 @@ mkdir -p "$REPO_DIR/$PLUGIN_DIR/.circleci"
 mkdir -p "$REPO_DIR/$PLUGIN_DIR/bin"
 
 # Pergunta informações ao usuário
-read -p "Digite o URI do plugin: " PLUGIN_URI
 read -p "Digite o nome do autor: " AUTHOR_NAME
 read -p "Digite o site do autor: " AUTHOR_URI
-read -p "Digite a versão do plugin (exemplo: 1.0): " PLUGIN_VERSION
+read -p "Digite a versão do plugin (Ex: 1.0): " PLUGIN_VERSION
 
 # Adiciona "(WP Plugin Starter)" ao nome do autor
 AUTHOR_NAME="$AUTHOR_NAME (WP Plugin Starter)"
@@ -55,8 +54,8 @@ cat > "$REPO_DIR/$PLUGIN_DIR/${PLUGIN_SAFE_NAME}.php" <<EOL
 <?php
 /**
  * Plugin Name: ${PLUGIN_NAME}
- * Plugin URI: ${PLUGIN_URI}
- * Description: Este plugin foi iniciado através da ferramenta WP Plugin Starter desenvolvida por Rafael Oliveira. Veja mais em https://github.com/XXX
+ * Plugin URI: https://github.com/rafaeloliveiraz/WP-Plugin-Starter
+ * Description: Este plugin foi iniciado através da ferramenta WP Plugin Starter desenvolvida por Rafael Oliveira. Veja mais em https://github.com/rafaeloliveiraz/WP-Plugin-Starter
  * Version: ${PLUGIN_VERSION}
  * Author: ${AUTHOR_NAME}
  * Author URI: ${AUTHOR_URI}
