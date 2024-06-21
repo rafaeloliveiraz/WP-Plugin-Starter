@@ -1,14 +1,5 @@
 #!/bin/bash
 
-# Crie um diretório temporário para executar o script
-TEMP_DIR=$(mktemp -d)
-
-# Faça o download do script para o diretório temporário
-curl -s https://raw.githubusercontent.com/rafaeloliveiraz/WP-Plugin-Starter/main/create-plugin.sh -o $TEMP_DIR/create-plugin.sh
-
-# Dê permissão de execução ao script
-chmod +x $TEMP_DIR/create-plugin.sh
-
 # Solicita o nome do plugin ao usuário
 read -p "Digite o nome do plugin: " PLUGIN_NAME
 PLUGIN_DIR="${PLUGIN_NAME// /-}"
@@ -148,6 +139,3 @@ class SampleTest extends WP_UnitTestCase {
 EOL
 
 echo "Plugin $PLUGIN_NAME criado com sucesso na pasta $PLUGIN_DIR"
-
-# Remova o diretório temporário após a execução
-rm -rf $TEMP_DIR
