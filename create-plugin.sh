@@ -11,7 +11,7 @@ PLUGIN_SAFE_NAME=$(echo "$PLUGIN_NAME" | tr ' ' '_' | tr '[:upper:]' '[:lower:]'
 PLUGIN_CLASS_SAFE_NAME=$(echo "$PLUGIN_NAME" | tr ' ' '_')
 
 # Verifica se o diretório do plugin já existe
-if [ -d "$REPO_DIR/$PLUGIN_DIR" ]; então
+if [ -d "$REPO_DIR/$PLUGIN_DIR" ]; then
   echo "O diretório $PLUGIN_DIR já existe. Por favor, escolha outro nome."
   exit 1
 fi
