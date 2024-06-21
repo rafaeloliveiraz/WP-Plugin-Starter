@@ -88,3 +88,4 @@ curl -s -o create-plugin-es.sh https://raw.githubusercontent.com/rafaeloliveiraz
 - Ingrese la versión del plugin (Ej: 1.0).
 
 4. Después de la ejecución, el script se eliminará automáticamente.
+
