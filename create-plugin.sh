@@ -4,14 +4,13 @@
 read -p "Digite o nome do plugin: " PLUGIN_NAME
 PLUGIN_DIR="${PLUGIN_NAME// /-}"
 
-# Pergunta informações ao usuário
-read -p "Digite o URI do plugin: " PLUGIN_URI
-read -p "Digite o nome do autor: " AUTHOR_NAME
-read -p "Digite o site do autor: " AUTHOR_URI
-read -p "Digite a versão do plugin: " PLUGIN_VERSION
+# Verifica se o diretório do plugin já existe
+if [ -d "$PLUGIN_DIR" ]; then
+  echo "O diretório $PLUGIN_DIR já existe. Por favor, escolha outro nome."
+  exit 1
+fi
 
 # Cria o diretório do plugin
-mkdir -p "$PLUGIN_DIR"
 mkdir -p "$PLUGIN_DIR/includes"
 mkdir -p "$PLUGIN_DIR/admin"
 mkdir -p "$PLUGIN_DIR/public"
@@ -22,6 +21,12 @@ mkdir -p "$PLUGIN_DIR/languages"
 mkdir -p "$PLUGIN_DIR/tests"
 mkdir -p "$PLUGIN_DIR/.circleci"
 mkdir -p "$PLUGIN_DIR/bin"
+
+# Pergunta informações ao usuário
+read -p "Digite o URI do plugin: " PLUGIN_URI
+read -p "Digite o nome do autor: " AUTHOR_NAME
+read -p "Digite o site do autor: " AUTHOR_URI
+read -p "Digite a versão do plugin: " PLUGIN_VERSION
 
 # Função para converter para maiúsculas
 to_upper() {
