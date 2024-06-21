@@ -4,8 +4,9 @@
 REPO_DIR="$(pwd)"
 
 # Solicita o nome do plugin ao usuário
-read -p "Digite o nome do plugin: " PLUGIN_NAME
+read -p "Digite o nome do plugin (Primeira letra maiúscula): " PLUGIN_NAME
 PLUGIN_DIR="${PLUGIN_NAME// /-}"
+PLUGIN_DIR=$(echo "$PLUGIN_DIR" | tr '[:upper:]' '[:lower:]')
 
 # Verifica se o diretório do plugin já existe
 if [ -d "$REPO_DIR/$PLUGIN_DIR" ]; then
@@ -29,7 +30,10 @@ mkdir -p "$REPO_DIR/$PLUGIN_DIR/bin"
 read -p "Digite o URI do plugin: " PLUGIN_URI
 read -p "Digite o nome do autor: " AUTHOR_NAME
 read -p "Digite o site do autor: " AUTHOR_URI
-read -p "Digite a versão do plugin: " PLUGIN_VERSION
+read -p "Digite a versão do plugin (exemplo: 1.0): " PLUGIN_VERSION
+
+# Adiciona "(WP Plugin Starter)" ao nome do autor
+AUTHOR_NAME="$AUTHOR_NAME (WP Plugin Starter)"
 
 # Função para converter para maiúsculas
 to_upper() {
@@ -147,3 +151,6 @@ class SampleTest extends WP_UnitTestCase {
 EOL
 
 echo "Plugin $PLUGIN_NAME criado com sucesso na pasta $REPO_DIR/$PLUGIN_DIR"
+
+# Auto deletar o script após execução
+rm -- "$0"
