@@ -1,12 +1,7 @@
 #!/bin/bash
 
-# Verifica se o nome do plugin foi fornecido
-if [ -z "$1" ]; then
-  echo "Uso: $0 nome-do-plugin"
-  exit 1
-fi
-
-PLUGIN_NAME=$1
+# Solicita o nome do plugin ao usuário
+read -p "Digite o nome do plugin: " PLUGIN_NAME
 PLUGIN_DIR="${PLUGIN_NAME// /-}"
 
 # Pergunta informações ao usuário
@@ -28,6 +23,19 @@ mkdir -p "$PLUGIN_DIR/tests"
 mkdir -p "$PLUGIN_DIR/.circleci"
 mkdir -p "$PLUGIN_DIR/bin"
 
+# Função para converter para maiúsculas
+to_upper() {
+    echo "$1" | tr '[:lower:]' '[:upper:]'
+}
+
+# Função para converter para PascalCase
+to_pascal_case() {
+    echo "$1" | sed -r 's/(^|-)(\w)/\U\2/g'
+}
+
+PLUGIN_CONST=$(to_upper "$PLUGIN_DIR")
+PLUGIN_CLASS=$(to_pascal_case "$PLUGIN_NAME")
+
 # Cria os arquivos principais do plugin
 cat > "$PLUGIN_DIR/${PLUGIN_DIR}.php" <<EOL
 <?php
@@ -45,24 +53,24 @@ if (!defined('WPINC')) {
     die;
 }
 
-define('${PLUGIN_DIR^^}_VERSION', '${PLUGIN_VERSION}');
+define('${PLUGIN_CONST}_VERSION', '${PLUGIN_VERSION}');
 
 function activate_${PLUGIN_DIR}() {
     require_once plugin_dir_path(__FILE__) . 'includes/class-${PLUGIN_DIR}-activator.php';
-    ${PLUGIN_NAME^}_Activator::activate();
+    ${PLUGIN_CLASS}_Activator::activate();
 }
 register_activation_hook(__FILE__, 'activate_${PLUGIN_DIR}');
 
 function deactivate_${PLUGIN_DIR}() {
     require_once plugin_dir_path(__FILE__) . 'includes/class-${PLUGIN_DIR}-deactivator.php';
-    ${PLUGIN_NAME^}_Deactivator::deactivate();
+    ${PLUGIN_CLASS}_Deactivator::deactivate();
 }
 register_deactivation_hook(__FILE__, 'deactivate_${PLUGIN_DIR}');
 
 require plugin_dir_path(__FILE__) . 'includes/class-${PLUGIN_DIR}.php';
 
 function run_${PLUGIN_DIR}() {
-    \$plugin = new ${PLUGIN_NAME^}();
+    \$plugin = new ${PLUGIN_CLASS}();
     \$plugin->run();
 }
 run_${PLUGIN_DIR}();
@@ -71,7 +79,7 @@ EOL
 # Cria as classes de ativação, desativação e a classe principal do plugin
 cat > "$PLUGIN_DIR/includes/class-${PLUGIN_DIR}-activator.php" <<EOL
 <?php
-class ${PLUGIN_NAME^}_Activator {
+class ${PLUGIN_CLASS}_Activator {
     public static function activate() {
         // Código de ativação aqui.
     }
@@ -80,7 +88,7 @@ EOL
 
 cat > "$PLUGIN_DIR/includes/class-${PLUGIN_DIR}-deactivator.php" <<EOL
 <?php
-class ${PLUGIN_NAME^}_Deactivator {
+class ${PLUGIN_CLASS}_Deactivator {
     public static function deactivate() {
         // Código de desativação aqui.
     }
@@ -89,7 +97,7 @@ EOL
 
 cat > "$PLUGIN_DIR/includes/class-${PLUGIN_DIR}.php" <<EOL
 <?php
-class ${PLUGIN_NAME^} {
+class ${PLUGIN_CLASS} {
     public function run() {
         // Inicialize o plugin aqui.
     }
@@ -98,14 +106,14 @@ EOL
 
 cat > "$PLUGIN_DIR/admin/class-${PLUGIN_DIR}-admin.php" <<EOL
 <?php
-class ${PLUGIN_NAME^}_Admin {
+class ${PLUGIN_CLASS}_Admin {
     // Código do admin aqui.
 }
 EOL
 
 cat > "$PLUGIN_DIR/public/class-${PLUGIN_DIR}-public.php" <<EOL
 <?php
-class ${PLUGIN_NAME^}_Public {
+class ${PLUGIN_CLASS}_Public {
     // Código público aqui.
 }
 EOL
