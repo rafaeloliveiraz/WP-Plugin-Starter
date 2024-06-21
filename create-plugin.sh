@@ -123,7 +123,7 @@ class ${PLUGIN_CLASS} {
             'manage_options',
             '${PLUGIN_SAFE_NAME}',
             array(\$this, 'display_plugin_admin_page'),
-            'dashicons-smiley',
+            'dashicons-admin-generic',
             26
         );
     }
