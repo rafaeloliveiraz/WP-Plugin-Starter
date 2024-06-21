@@ -146,4 +146,4 @@ EOL
 echo "Plugin $PLUGIN_NAME criado com sucesso na pasta $PLUGIN_DIR"
 
 # Auto deletar o script após execução
-rm -- "$0"
+# rm -- "$0"
