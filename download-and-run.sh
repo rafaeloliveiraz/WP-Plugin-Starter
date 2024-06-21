@@ -7,7 +7,13 @@ SCRIPT_URL="https://raw.githubusercontent.com/rafaeloliveiraz/WP-Plugin-Starter/
 REPO_DIR="wp-plugin-starter"
 SCRIPT_PATH="$REPO_DIR/create-plugin.sh"
 
-# Crie o diretório do repositório se ele não existir
+# Verifica se o diretório do repositório já existe
+if [ -d "$REPO_DIR" ]; then
+  echo "O diretório $REPO_DIR já existe. Removendo..."
+  rm -rf $REPO_DIR
+fi
+
+# Crie o diretório do repositório novamente
 mkdir -p $REPO_DIR
 
 # Baixe o script principal para o diretório do repositório
