@@ -7,7 +7,8 @@ REPO_DIR="$(pwd)"
 read -p "Digite o nome do plugin (Ex: Meu Plugin): " PLUGIN_NAME
 PLUGIN_DIR="${PLUGIN_NAME// /-}"
 PLUGIN_DIR=$(echo "$PLUGIN_DIR" | tr '[:upper:]' '[:lower:]')
-PLUGIN_SAFE_NAME=$(echo "$PLUGIN_NAME" | tr -d ' ' | tr '[:upper:]' '[:lower:]')
+PLUGIN_SAFE_NAME=$(echo "$PLUGIN_NAME" | tr ' ' '_' | tr '[:upper:]' '[:lower:]')
+PLUGIN_CLASS_SAFE_NAME=$(echo "$PLUGIN_NAME" | tr ' ' '_')
 
 # Verifica se o diretório do plugin já existe
 if [ -d "$REPO_DIR/$PLUGIN_DIR" ]; then
