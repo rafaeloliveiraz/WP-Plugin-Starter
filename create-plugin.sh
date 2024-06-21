@@ -49,20 +49,20 @@ define('${PLUGIN_DIR^^}_VERSION', '${PLUGIN_VERSION}');
 
 function activate_${PLUGIN_DIR}() {
     require_once plugin_dir_path(__FILE__) . 'includes/class-${PLUGIN_DIR}-activator.php';
-    ${PLUGIN_DIR^}_Activator::activate();
+    ${PLUGIN_NAME^}_Activator::activate();
 }
 register_activation_hook(__FILE__, 'activate_${PLUGIN_DIR}');
 
 function deactivate_${PLUGIN_DIR}() {
     require_once plugin_dir_path(__FILE__) . 'includes/class-${PLUGIN_DIR}-deactivator.php';
-    ${PLUGIN_DIR^}_Deactivator::deactivate();
+    ${PLUGIN_NAME^}_Deactivator::deactivate();
 }
 register_deactivation_hook(__FILE__, 'deactivate_${PLUGIN_DIR}');
 
 require plugin_dir_path(__FILE__) . 'includes/class-${PLUGIN_DIR}.php';
 
 function run_${PLUGIN_DIR}() {
-    \$plugin = new ${PLUGIN_DIR^}();
+    \$plugin = new ${PLUGIN_NAME^}();
     \$plugin->run();
 }
 run_${PLUGIN_DIR}();
@@ -71,7 +71,7 @@ EOL
 # Cria as classes de ativação, desativação e a classe principal do plugin
 cat > "$PLUGIN_DIR/includes/class-${PLUGIN_DIR}-activator.php" <<EOL
 <?php
-class ${PLUGIN_DIR^}_Activator {
+class ${PLUGIN_NAME^}_Activator {
     public static function activate() {
         // Código de ativação aqui.
     }
@@ -80,7 +80,7 @@ EOL
 
 cat > "$PLUGIN_DIR/includes/class-${PLUGIN_DIR}-deactivator.php" <<EOL
 <?php
-class ${PLUGIN_DIR^}_Deactivator {
+class ${PLUGIN_NAME^}_Deactivator {
     public static function deactivate() {
         // Código de desativação aqui.
     }
@@ -89,7 +89,7 @@ EOL
 
 cat > "$PLUGIN_DIR/includes/class-${PLUGIN_DIR}.php" <<EOL
 <?php
-class ${PLUGIN_DIR^} {
+class ${PLUGIN_NAME^} {
     public function run() {
         // Inicialize o plugin aqui.
     }
@@ -98,14 +98,14 @@ EOL
 
 cat > "$PLUGIN_DIR/admin/class-${PLUGIN_DIR}-admin.php" <<EOL
 <?php
-class ${PLUGIN_DIR^}_Admin {
+class ${PLUGIN_NAME^}_Admin {
     // Código do admin aqui.
 }
 EOL
 
 cat > "$PLUGIN_DIR/public/class-${PLUGIN_DIR}-public.php" <<EOL
 <?php
-class ${PLUGIN_DIR^}_Public {
+class ${PLUGIN_NAME^}_Public {
     // Código público aqui.
 }
 EOL
