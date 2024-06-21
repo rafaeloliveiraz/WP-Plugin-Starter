@@ -1,27 +1,35 @@
 #!/bin/bash
 
+# Define o diretório onde o script será executado
+REPO_DIR="$(pwd)"
+
 # Solicita o nome do plugin ao usuário
 read -p "Digite o nome do plugin: " PLUGIN_NAME
 PLUGIN_DIR="${PLUGIN_NAME// /-}"
+
+# Verifica se o diretório do plugin já existe
+if [ -d "$REPO_DIR/$PLUGIN_DIR" ]; then
+  echo "O diretório $PLUGIN_DIR já existe. Por favor, escolha outro nome."
+  exit 1
+fi
+
+# Cria o diretório do plugin dentro do diretório definido em $REPO_DIR
+mkdir -p "$REPO_DIR/$PLUGIN_DIR/includes"
+mkdir -p "$REPO_DIR/$PLUGIN_DIR/admin"
+mkdir -p "$REPO_DIR/$PLUGIN_DIR/public"
+mkdir -p "$REPO_DIR/$PLUGIN_DIR/assets/css"
+mkdir -p "$REPO_DIR/$PLUGIN_DIR/assets/js"
+mkdir -p "$REPO_DIR/$PLUGIN_DIR/assets/images"
+mkdir -p "$REPO_DIR/$PLUGIN_DIR/languages"
+mkdir -p "$REPO_DIR/$PLUGIN_DIR/tests"
+mkdir -p "$REPO_DIR/$PLUGIN_DIR/.circleci"
+mkdir -p "$REPO_DIR/$PLUGIN_DIR/bin"
 
 # Pergunta informações ao usuário
 read -p "Digite o URI do plugin: " PLUGIN_URI
 read -p "Digite o nome do autor: " AUTHOR_NAME
 read -p "Digite o site do autor: " AUTHOR_URI
 read -p "Digite a versão do plugin: " PLUGIN_VERSION
-
-# Cria o diretório do plugin
-mkdir -p "$PLUGIN_DIR"
-mkdir -p "$PLUGIN_DIR/includes"
-mkdir -p "$PLUGIN_DIR/admin"
-mkdir -p "$PLUGIN_DIR/public"
-mkdir -p "$PLUGIN_DIR/assets/css"
-mkdir -p "$PLUGIN_DIR/assets/js"
-mkdir -p "$PLUGIN_DIR/assets/images"
-mkdir -p "$PLUGIN_DIR/languages"
-mkdir -p "$PLUGIN_DIR/tests"
-mkdir -p "$PLUGIN_DIR/.circleci"
-mkdir -p "$PLUGIN_DIR/bin"
 
 # Função para converter para maiúsculas
 to_upper() {
@@ -37,7 +45,7 @@ PLUGIN_CONST=$(to_upper "$PLUGIN_DIR")
 PLUGIN_CLASS=$(to_pascal_case "$PLUGIN_NAME")
 
 # Cria os arquivos principais do plugin
-cat > "$PLUGIN_DIR/${PLUGIN_DIR}.php" <<EOL
+cat > "$REPO_DIR/$PLUGIN_DIR/${PLUGIN_DIR}.php" <<EOL
 <?php
 /**
  * Plugin Name: ${PLUGIN_NAME}
@@ -77,7 +85,7 @@ run_${PLUGIN_DIR}();
 EOL
 
 # Cria as classes de ativação, desativação e a classe principal do plugin
-cat > "$PLUGIN_DIR/includes/class-${PLUGIN_DIR}-activator.php" <<EOL
+cat > "$REPO_DIR/$PLUGIN_DIR/includes/class-${PLUGIN_DIR}-activator.php" <<EOL
 <?php
 class ${PLUGIN_CLASS}_Activator {
     public static function activate() {
@@ -86,7 +94,7 @@ class ${PLUGIN_CLASS}_Activator {
 }
 EOL
 
-cat > "$PLUGIN_DIR/includes/class-${PLUGIN_DIR}-deactivator.php" <<EOL
+cat > "$REPO_DIR/$PLUGIN_DIR/includes/class-${PLUGIN_DIR}-deactivator.php" <<EOL
 <?php
 class ${PLUGIN_CLASS}_Deactivator {
     public static function deactivate() {
@@ -95,7 +103,7 @@ class ${PLUGIN_CLASS}_Deactivator {
 }
 EOL
 
-cat > "$PLUGIN_DIR/includes/class-${PLUGIN_DIR}.php" <<EOL
+cat > "$REPO_DIR/$PLUGIN_DIR/includes/class-${PLUGIN_DIR}.php" <<EOL
 <?php
 class ${PLUGIN_CLASS} {
     public function run() {
@@ -104,14 +112,14 @@ class ${PLUGIN_CLASS} {
 }
 EOL
 
-cat > "$PLUGIN_DIR/admin/class-${PLUGIN_DIR}-admin.php" <<EOL
+cat > "$REPO_DIR/$PLUGIN_DIR/admin/class-${PLUGIN_DIR}-admin.php" <<EOL
 <?php
 class ${PLUGIN_CLASS}_Admin {
     // Código do admin aqui.
 }
 EOL
 
-cat > "$PLUGIN_DIR/public/class-${PLUGIN_DIR}-public.php" <<EOL
+cat > "$REPO_DIR/$PLUGIN_DIR/public/class-${PLUGIN_DIR}-public.php" <<EOL
 <?php
 class ${PLUGIN_CLASS}_Public {
     // Código público aqui.
@@ -119,23 +127,23 @@ class ${PLUGIN_CLASS}_Public {
 EOL
 
 # Outros arquivos e diretórios
-touch "$PLUGIN_DIR/.distignore"
-touch "$PLUGIN_DIR/.editorconfig"
-touch "$PLUGIN_DIR/.gitignore"
-touch "$PLUGIN_DIR/.phpcs.xml.dist"
-touch "$PLUGIN_DIR/Gruntfile.js"
-touch "$PLUGIN_DIR/package.json"
-touch "$PLUGIN_DIR/phpunit.xml.dist"
-touch "$PLUGIN_DIR/readme.txt"
-cat > "$PLUGIN_DIR/tests/bootstrap.php" <<EOL
+touch "$REPO_DIR/$PLUGIN_DIR/.distignore"
+touch "$REPO_DIR/$PLUGIN_DIR/.editorconfig"
+touch "$REPO_DIR/$PLUGIN_DIR/.gitignore"
+touch "$REPO_DIR/$PLUGIN_DIR/.phpcs.xml.dist"
+touch "$REPO_DIR/$PLUGIN_DIR/Gruntfile.js"
+touch "$REPO_DIR/$PLUGIN_DIR/package.json"
+touch "$REPO_DIR/$PLUGIN_DIR/phpunit.xml.dist"
+touch "$REPO_DIR/$PLUGIN_DIR/readme.txt"
+cat > "$REPO_DIR/$PLUGIN_DIR/tests/bootstrap.php" <<EOL
 <?php
 // Código de bootstrap para testes aqui.
 EOL
-cat > "$PLUGIN_DIR/tests/test-sample.php" <<EOL
+cat > "$REPO_DIR/$PLUGIN_DIR/tests/test-sample.php" <<EOL
 <?php
 class SampleTest extends WP_UnitTestCase {
     // Exemplo de teste.
 }
 EOL
 
-echo "Plugin $PLUGIN_NAME criado com sucesso na pasta $PLUGIN_DIR"
+echo "Plugin $PLUGIN_NAME criado com sucesso na pasta $REPO_DIR/$PLUGIN_DIR"
