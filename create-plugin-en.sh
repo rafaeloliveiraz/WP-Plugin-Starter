@@ -130,7 +130,7 @@ class ${PLUGIN_CLASS} {
     public function display_plugin_admin_page() {
         echo '<div class="wrap">';
         echo '<h1>Hello Sun!</h1>';
-        echo '<p>Welcome to ${PLUGIN_NAME}! Let's do something amazing together.</p>';
+        echo '<p>Welcome to ${PLUGIN_NAME}! Let\'s do something amazing together.</p>';
         echo '<button id="example-button" class="button button-primary">Click here!</button>';
         echo '</div>';
         echo '<script type="text/javascript">
