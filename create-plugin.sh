@@ -4,9 +4,10 @@
 REPO_DIR="$(pwd)"
 
 # Solicita o nome do plugin ao usuário
-read -p "Digite o nome do plugin (Primeira letra maiúscula): " PLUGIN_NAME
+read -p "Digite o nome do plugin (Ex: Meu Plugin): " PLUGIN_NAME
 PLUGIN_DIR="${PLUGIN_NAME// /-}"
 PLUGIN_DIR=$(echo "$PLUGIN_DIR" | tr '[:upper:]' '[:lower:]')
+PLUGIN_SAFE_NAME=$(echo "$PLUGIN_NAME" | tr -d ' ' | tr '[:upper:]' '[:lower:]')
 
 # Verifica se o diretório do plugin já existe
 if [ -d "$REPO_DIR/$PLUGIN_DIR" ]; then
@@ -27,10 +28,9 @@ mkdir -p "$REPO_DIR/$PLUGIN_DIR/.circleci"
 mkdir -p "$REPO_DIR/$PLUGIN_DIR/bin"
 
 # Pergunta informações ao usuário
-read -p "Digite o URI do plugin: " PLUGIN_URI
 read -p "Digite o nome do autor: " AUTHOR_NAME
 read -p "Digite o site do autor: " AUTHOR_URI
-read -p "Digite a versão do plugin (exemplo: 1.0): " PLUGIN_VERSION
+read -p "Digite a versão do plugin (Ex: 1.0): " PLUGIN_VERSION
 
 # Adiciona "(WP Plugin Starter)" ao nome do autor
 AUTHOR_NAME="$AUTHOR_NAME (WP Plugin Starter)"
@@ -42,19 +42,19 @@ to_upper() {
 
 # Função para converter para PascalCase
 to_pascal_case() {
-    echo "$1" | sed -r 's/(^|-)(\w)/\U\2/g'
+    echo "$1" | sed -r 's/(^| |-)(\w)/\U\2/g'
 }
 
-PLUGIN_CONST=$(to_upper "$PLUGIN_DIR")
+PLUGIN_CONST=$(to_upper "$PLUGIN_SAFE_NAME")
 PLUGIN_CLASS=$(to_pascal_case "$PLUGIN_NAME")
 
 # Cria os arquivos principais do plugin
-cat > "$REPO_DIR/$PLUGIN_DIR/${PLUGIN_DIR}.php" <<EOL
+cat > "$REPO_DIR/$PLUGIN_DIR/${PLUGIN_SAFE_NAME}.php" <<EOL
 <?php
 /**
  * Plugin Name: ${PLUGIN_NAME}
- * Plugin URI: ${PLUGIN_URI}
- * Description: Este plugin foi iniciado através da ferramenta WP Plugin Starter desenvolvida por Rafael Oliveira. Veja mais em https://github.com/XXX
+ * Plugin URI: https://github.com/rafaeloliveiraz/WP-Plugin-Starter
+ * Description: Este plugin foi iniciado através da ferramenta WP Plugin Starter desenvolvida por Rafael Oliveira. Veja mais em https://github.com/rafaeloliveiraz/WP-Plugin-Starter
  * Version: ${PLUGIN_VERSION}
  * Author: ${AUTHOR_NAME}
  * Author URI: ${AUTHOR_URI}
@@ -67,29 +67,29 @@ if (!defined('WPINC')) {
 
 define('${PLUGIN_CONST}_VERSION', '${PLUGIN_VERSION}');
 
-function activate_${PLUGIN_DIR}() {
-    require_once plugin_dir_path(__FILE__) . 'includes/class-${PLUGIN_DIR}-activator.php';
+function activate_${PLUGIN_SAFE_NAME}() {
+    require_once plugin_dir_path(__FILE__) . 'includes/class-${PLUGIN_SAFE_NAME}-activator.php';
     ${PLUGIN_CLASS}_Activator::activate();
 }
-register_activation_hook(__FILE__, 'activate_${PLUGIN_DIR}');
+register_activation_hook(__FILE__, 'activate_${PLUGIN_SAFE_NAME}');
 
-function deactivate_${PLUGIN_DIR}() {
-    require_once plugin_dir_path(__FILE__) . 'includes/class-${PLUGIN_DIR}-deactivator.php';
+function deactivate_${PLUGIN_SAFE_NAME}() {
+    require_once plugin_dir_path(__FILE__) . 'includes/class-${PLUGIN_SAFE_NAME}-deactivator.php';
     ${PLUGIN_CLASS}_Deactivator::deactivate();
 }
-register_deactivation_hook(__FILE__, 'deactivate_${PLUGIN_DIR}');
+register_deactivation_hook(__FILE__, 'deactivate_${PLUGIN_SAFE_NAME}');
 
-require plugin_dir_path(__FILE__) . 'includes/class-${PLUGIN_DIR}.php';
+require plugin_dir_path(__FILE__) . 'includes/class-${PLUGIN_SAFE_NAME}.php';
 
-function run_${PLUGIN_DIR}() {
+function run_${PLUGIN_SAFE_NAME}() {
     \$plugin = new ${PLUGIN_CLASS}();
     \$plugin->run();
 }
-run_${PLUGIN_DIR}();
+run_${PLUGIN_SAFE_NAME}();
 EOL
 
 # Cria as classes de ativação, desativação e a classe principal do plugin
-cat > "$REPO_DIR/$PLUGIN_DIR/includes/class-${PLUGIN_DIR}-activator.php" <<EOL
+cat > "$REPO_DIR/$PLUGIN_DIR/includes/class-${PLUGIN_SAFE_NAME}-activator.php" <<EOL
 <?php
 class ${PLUGIN_CLASS}_Activator {
     public static function activate() {
@@ -98,7 +98,7 @@ class ${PLUGIN_CLASS}_Activator {
 }
 EOL
 
-cat > "$REPO_DIR/$PLUGIN_DIR/includes/class-${PLUGIN_DIR}-deactivator.php" <<EOL
+cat > "$REPO_DIR/$PLUGIN_DIR/includes/class-${PLUGIN_SAFE_NAME}-deactivator.php" <<EOL
 <?php
 class ${PLUGIN_CLASS}_Deactivator {
     public static function deactivate() {
@@ -107,7 +107,7 @@ class ${PLUGIN_CLASS}_Deactivator {
 }
 EOL
 
-cat > "$REPO_DIR/$PLUGIN_DIR/includes/class-${PLUGIN_DIR}.php" <<EOL
+cat > "$REPO_DIR/$PLUGIN_DIR/includes/class-${PLUGIN_SAFE_NAME}.php" <<EOL
 <?php
 class ${PLUGIN_CLASS} {
     public function run() {
@@ -116,14 +116,14 @@ class ${PLUGIN_CLASS} {
 }
 EOL
 
-cat > "$REPO_DIR/$PLUGIN_DIR/admin/class-${PLUGIN_DIR}-admin.php" <<EOL
+cat > "$REPO_DIR/$PLUGIN_DIR/admin/class-${PLUGIN_SAFE_NAME}-admin.php" <<EOL
 <?php
 class ${PLUGIN_CLASS}_Admin {
     // Código do admin aqui.
 }
 EOL
 
-cat > "$REPO_DIR/$PLUGIN_DIR/public/class-${PLUGIN_DIR}-public.php" <<EOL
+cat > "$REPO_DIR/$PLUGIN_DIR/public/class-${PLUGIN_SAFE_NAME}-public.php" <<EOL
 <?php
 class ${PLUGIN_CLASS}_Public {
     // Código público aqui.
