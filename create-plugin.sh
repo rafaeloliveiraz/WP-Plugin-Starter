@@ -113,7 +113,26 @@ cat > "$REPO_DIR/$PLUGIN_DIR/includes/class-${PLUGIN_SAFE_NAME}.php" <<EOL
 <?php
 class ${PLUGIN_CLASS} {
     public function run() {
-        // Inicialize o plugin aqui.
+        add_action('admin_menu', array(\$this, 'add_plugin_admin_menu'));
+    }
+
+    public function add_plugin_admin_menu() {
+        add_menu_page(
+            '${PLUGIN_NAME}',
+            '${PLUGIN_NAME}',
+            'manage_options',
+            '${PLUGIN_SAFE_NAME}',
+            array(\$this, 'display_plugin_admin_page'),
+            'dashicons-admin-generic',
+            26
+        );
+    }
+
+    public function display_plugin_admin_page() {
+        echo '<div class="wrap">';
+        echo '<h1>${PLUGIN_NAME}</h1>';
+        echo '<button class="button button-primary">Exemplo de Botão</button>';
+        echo '</div>';
     }
 }
 EOL
